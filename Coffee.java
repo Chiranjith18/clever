@@ -1,56 +1,29 @@
-import com.sun.jdi.InvalidTypeException;
-
 public class Coffee {
+    private String roast;
 
-    // Attributes to store information about the coffee
-    String name;                // for example, "Espresso", "Latte", "Mocha"
-    String roast;               // for example, "light", "medium", "dark"
-    int caffeineLevelInMg;      // calculated based on the roast
-    double price;               // in dollars, for example, 2.50
+    public Coffee(String roast) throws InvalidTypeException {
+        setRoast(roast);
+    }
 
-    // Constructor to create a new coffee object with the given information
-    public Coffee(String name, String roast, double price) {
-        this.name = name;
+    public void setRoast(String roast) throws InvalidTypeException {
+        if (!isValidRoast(roast)) {
+            throw new InvalidTypeException("Invalid roast: \"" + roast + "\", please select a valid roast type!");
+        }
         this.roast = roast;
-        this.price = price;
+    }
 
-        // TODO 3: surround the setCaffeineLevel() method call with a try-catch block to handle the exception
-        try {
-            setCaffeineLevel();
-            // The constructor calls the method to set the caffeine level based on the roast
-        } catch (InvalidTypeException invalidRoastTypeException) {
-            // TODO 4: inside the catch block, set the caffeineLevelInMg to 50
-            caffeineLevelInMg = 50;
+    private boolean isValidRoast(String roast) {
+        // Add logic to check if the roast type is valid
+        return roast.equalsIgnoreCase("light") || roast.equalsIgnoreCase("medium") || roast.equalsIgnoreCase("dark");
+    }
+
+    public String getRoast() {
+        return roast;
+    }
+
+    public static class InvalidTypeException extends Exception {
+        public InvalidTypeException(String message) {
+            super(message);
         }
-    }
-
-    // TODO 2: declare that the setCaffeineLevel() method throws a InvalidTypeException
-    // Method to set the caffeine level of the coffee based on the roast
-    public void setCaffeineLevel() throws InvalidTypeException {
-        if (roast.equals("light")) {
-            caffeineLevelInMg = 50;
-        } else if (roast.equals("medium")) {
-            caffeineLevelInMg = 100;
-        } else if (roast.equals("dark")) {
-            caffeineLevelInMg = 150;
-        } else {
-            // TODO 1: remove this statement & throw a "InvalidTypeException" with a message
-            throw new InvalidTypeException("invalid roast: ‘" + roast + "’, please select a valid roast type!");
-        }
-    }
-
-    // Methods to simulate coffee preparation
-    public void grindBeans() {
-        System.out.println("\nGrinding beans for " + name + "...");
-    }
-
-    public void brewCoffee() {
-        System.out.println("\nBrewing your favorite " + name + "...");
-    }
-
-    // Method to print the information about the coffee
-    public void printInfo() {
-        System.out.println("\nYou ordered a " + name + " with a " + roast + " roast.");
-        System.out.println("The caffeine level in your coffee is " + caffeineLevelInMg + " mg.");
     }
 }
