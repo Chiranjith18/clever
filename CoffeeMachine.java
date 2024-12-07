@@ -1,11 +1,9 @@
 import com.sun.jdi.InvalidTypeException;
-
 import java.util.Scanner;
 
 public class CoffeeMachine {
 
     public static void main(String[] args) {
-
         // Create a Scanner object to read input
         Scanner keyboard = new Scanner(System.in);
 
@@ -22,94 +20,10 @@ public class CoffeeMachine {
 
             switch (choice) {
                 case 1:
-                    // Initialize the name of Espresso
-                    String espressoName = "Espresso";
-
-                    // Initialize the price of Espresso per serving
-                    double espressoPrice = 2.50;
-
-                    // Ask the user for the type of roast and store it in espressoRoast
-                    System.out.print("What Roast would you like? (light, medium, dark): ");
-                    String espressoRoast = keyboard.next();
-
-                    // Ask the user for the number of shots and store it in numberOfShots
-                    System.out.print("How many servings would you like? (a number please): ");
-                    int numberOfShots = keyboard.nextInt();
-
-                    // TODO 8: declare the myEspresso object before the try block and set it to null.
-                    Espresso myEspresso = null;
-
-                    // TODO 7: surround the myEspresso object with a try-catch block to handle the ArithmeticException.
-                    try {
-                        myEspresso = new Espresso(espressoName, espressoRoast, espressoPrice, numberOfShots);
-                    } catch (ArithmeticException e) {
-                        // TODO 9: inside the catch block, ask the user to enter number of shots and store it in numberOfShots
-                        // Ask the user for the number of shots and store it in numberOfShots
-                        System.out.print("How many servings would you like? (a number please): ");
-                        numberOfShots = keyboard.nextInt();
-                    } finally { // TODO 10: add a finally block, and initialize the myEspresso object again
-                        myEspresso = new Espresso(espressoName, espressoRoast, espressoPrice, numberOfShots);
-                    }
-
-                    myEspresso.grindBeans();
-
-                    myEspresso.brewCoffee();
-
-                    myEspresso.printInfo();
-
-                    myEspresso.printEspressoDetails();
-
+                    handleEspressoOrder(keyboard);
                     break;
                 case 2:
-
-                    // Initialize the name of Latte
-                    String latteName = "Latte";
-
-                    // Initialize the price of Latte
-                    double lattePrice = 3.50;
-
-                    // Ask the user for the type of roast and store it in latteRoast
-                    System.out.print("What Roast would you like? (light, medium, dark): ");
-                    String latteRoast = keyboard.next();
-
-                    // Ask the user for the milk type and store it in milkType
-                    System.out.print("What milk type would you like? (whole, skim, almond, oat): ");
-                    String milkType = keyboard.next();
-
-                    // Ask the user if they want syrup or not
-                    System.out.print("Would you like syrup? (yes/ no): ");
-                    String syrupWanted = keyboard.next();
-
-                    String syrupFlavor = "no";
-                    // if syrupWanted is yes, Ask the user for the syrup flavor and store it in syrupFlavor
-                    if (syrupWanted.equals("yes")) {
-                        System.out.print("Which flavor would you like? (vanilla, caramel, hazelnut): ");
-                        syrupFlavor = keyboard.next();
-                    }
-
-                    // TODO 14: declare the myLatte object before the try block and set it to null.
-                    Latte myLatte = null;
-
-                    // TODO 13: surround the myLatte object with a try-catch block to handle the IllegalArgumentException.
-                    try {
-                        myLatte = new Latte(latteName, latteRoast, lattePrice, milkType, syrupFlavor);
-                    } catch (IllegalArgumentException e) {
-                        // TODO 15: inside the catch block, ask the user to enter milkType again
-                        // Ask the user for the milk type and store it in milkType
-                        System.out.print("What milk type would you like? (whole, skim, almond, oat): ");
-                        milkType = keyboard.next();
-                    } finally { // TODO 16: add a finally block, and initialize the myLatte object again
-                        myLatte = new Latte(latteName, latteRoast, lattePrice, milkType, syrupFlavor);
-                    }
-
-                    myLatte.grindBeans();
-
-                    myLatte.brewCoffee();
-
-                    myLatte.printInfo();
-
-                    myLatte.printLatteDetails();
-
+                    handleLatteOrder(keyboard);
                     break;
                 case 3:
                     System.out.println("Thank you for using the Coffee Machine!");
@@ -118,5 +32,68 @@ public class CoffeeMachine {
                     System.out.println("Invalid choice. Please enter 1, 2, or 3.");
             }
         }
+    }
+
+    private static void handleEspressoOrder(Scanner keyboard) {
+        String espressoName = "Espresso";
+        double espressoPrice = 2.50;
+
+        System.out.print("What Roast would you like? (light, medium, dark): ");
+        String espressoRoast = keyboard.next();
+
+        System.out.print("How many servings would you like? (a number please): ");
+        int numberOfShots = keyboard.nextInt();
+
+        Espresso myEspresso = null;
+
+        try {
+            myEspresso = new Espresso(espressoName, espressoRoast, espressoPrice, numberOfShots);
+        } catch (ArithmeticException e) {
+            System.out.print("Please enter a valid number of servings: ");
+            numberOfShots = keyboard.nextInt();
+        } finally {
+            myEspresso = new Espresso(espressoName, espressoRoast, espressoPrice, numberOfShots);
+        }
+
+        myEspresso.grindBeans();
+        myEspresso.brewCoffee();
+        myEspresso.printInfo();
+        myEspresso.printEspressoDetails();
+    }
+
+    private static void handleLatteOrder(Scanner keyboard) {
+        String latteName = "Latte";
+        double lattePrice = 3.50;
+
+        System.out.print("What Roast would you like? (light, medium, dark): ");
+        String latteRoast = keyboard.next();
+
+        System.out.print("What milk type would you like? (whole, skim, almond, oat): ");
+        String milkType = keyboard.next();
+
+        System.out.print("Would you like syrup? (yes/no): ");
+        String syrupWanted = keyboard.next();
+        String syrupFlavor = "no";
+
+        if ("yes".equalsIgnoreCase(syrupWanted)) {
+            System.out.print("Which flavor would you like? (vanilla, caramel, hazelnut): ");
+            syrupFlavor = keyboard.next();
+        }
+
+        Latte myLatte = null;
+
+        try {
+            myLatte = new Latte(latteName, latteRoast, lattePrice, milkType, syrupFlavor);
+        } catch (IllegalArgumentException e) {
+            System.out.print("Please select a valid milk type (whole, skim, almond, oat): ");
+            milkType = keyboard.next();
+        } finally {
+            myLatte = new Latte(latteName, latteRoast, lattePrice, milkType, syrupFlavor);
+        }
+
+        myLatte.grindBeans();
+        myLatte.brewCoffee();
+        myLatte.printInfo();
+        myLatte.printLatteDetails();
     }
 }
